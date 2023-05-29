@@ -1,28 +1,34 @@
 import { Modal, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
-import { postCreateUser } from '../services/UserService';
 import { putUpdateUser } from '../services/UserService';
-import { Toast } from 'bootstrap';
+// import { Toast } from 'react-toastify';
 
 
 const ModalEditUser = (props) => {
-    const { show, handleClose, dataUserEdit } = props;  
+    const { show, handleClose, dataUserEdit, handleEditUserFromModal } = props;  
     const [name, setName] = useState('')
     const [job, setJob] = useState('')
-    const [email, setEmail] = useState('')
+    // const [email, setEmail] = useState('')
 
     const handleEditUser = async () => {
-        let res = await putUpdateUser(name, job , email)
+        let res = await putUpdateUser(name, job)
         if(res && res.updateAt) {
-            
+            handleEditUserFromModal({
+                first_name: name,
+                id: dataUserEdit.id,
+                // last_name: job,
+                // email: email
+            })
+
+            handleClose()
         }
     }
 
     useEffect(() => {
         if(show) {
             setName(dataUserEdit.first_name)
-            setJob(dataUserEdit.last_name)
-            setEmail(dataUserEdit.email)
+            // setJob(dataUserEdit.last_name)c
+            // setEmail(dataUserEdit.email)
         }
     }, [dataUserEdit])
 
@@ -34,7 +40,7 @@ const ModalEditUser = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className='body-add-new'>
-                        <div class="mb-3">
+                        <div className="mb-3">
                             <label className="form-label">Name</label>
                             <input 
                                 type="text" 
@@ -43,7 +49,7 @@ const ModalEditUser = (props) => {
                                 onChange={(event) => setName(event.target.value)}
                             />
                         </div>
-                        <div class="mb-3">
+                        <div className="mb-3">
                             <label className="form-label">Job</label>
                             <input 
                                 type="text" 
@@ -52,7 +58,7 @@ const ModalEditUser = (props) => {
                                 onChange={(event) => setJob(event.target.value)}
                             />
                         </div>
-                        <div class="mb-3">
+                        {/* <div class="mb-3">
                             <label className="form-label">Email</label>
                             <input 
                                 type="text" 
@@ -60,7 +66,7 @@ const ModalEditUser = (props) => {
                                 value={email}
                                 onChange={(event) => setEmail(event.target.value)}
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

@@ -7,13 +7,17 @@ const fetAllUser = (page) => {
 }
 
 const postCreateUser = (name, job) => {
-    return axios.post('/api/users', {name, job})
+    return axios.post('/api/users/2', {name, job})
 }
 
-const putUpdateUser = (name, job, email) => {
-    return axios.put('/api/users', {name, job, email})
+const putUpdateUser = (name, job) => {
+    return axios.put('/api/users/2', {name, job})
 
 }
 
-export { fetAllUser, postCreateUser, putUpdateUser }
+const deleteUser = (id) => {
+    return axios.delete(`/api/users/${id}`)
+}
+
+export { fetAllUser, postCreateUser, putUpdateUser, deleteUser }
 

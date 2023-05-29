@@ -7,31 +7,34 @@ const ModalAddNew = (props) => {
     const { show, handleClose, handleUpdateTable } = props;  
     const [name, setName] = useState('')
     const [job, setJob] = useState('')
-    const [email, setEmail] = useState('')
+    // const [email, setEmail] = useState('')
 
     const handleSaveUser = async () => {
-        let res = await postCreateUser(name, job, email)
+        let res = await postCreateUser(name, job)
 
         if (res && res.id) {
             handleClose()
             setName('')
             setJob('')
-            setEmail('')
-            handleUpdateTable({ first_name : name, id:res.id, email:email, last_name: job })
+            // setEmail('')
+            handleUpdateTable({ first_name : name, id:res.id, last_name: job })
         } else {
-            handleClose()
+            // handleClose()
         }
     }
 
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal 
+                show={show} 
+                onHide={handleClose}
+            >
                 <Modal.Header closeButton>
                     <Modal.Title>Add new user</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className='body-add-new'>
-                        <div class="mb-3">
+                        <div className="mb-3">
                             <label className="form-label">Name</label>
                             <input 
                                 type="text" 
@@ -40,7 +43,7 @@ const ModalAddNew = (props) => {
                                 onChange={(event) => setName(event.target.value)}
                             />
                         </div>
-                        <div class="mb-3">
+                        <div className="mb-3">
                             <label className="form-label">Job</label>
                             <input 
                                 type="text" 
@@ -49,7 +52,7 @@ const ModalAddNew = (props) => {
                                 onChange={(event) => setJob(event.target.value)}
                             />
                         </div>
-                        <div class="mb-3">
+                        {/* <div class="mb-3">
                             <label className="form-label">Email</label>
                             <input 
                                 type="text" 
@@ -57,7 +60,7 @@ const ModalAddNew = (props) => {
                                 value={email}
                                 onChange={(event) => setEmail(event.target.value)}
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
