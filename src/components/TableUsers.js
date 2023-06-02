@@ -6,6 +6,8 @@ import ModalAddNew from './ModalAddNew'
 import ModalEditUser from './ModalEditUser'
 import _ from 'lodash'
 import ModalConfirm from './ModalConfirm'
+import './TableUser.scss'
+// import { CSVLink, CSVDownload } from "react-csv";
 
 
 const TableUsers = (props) => {
@@ -20,6 +22,11 @@ const TableUsers = (props) => {
 
     const [ isShowModalDelete, setIsShowModalDelete ] = useState(false)
     const [ dataUserDelete, setDataUserDelete ] = useState({})
+
+    const [sortBy, setSortBy] = useState('asc')
+    const [sortField, setSortField] = useState('id')
+
+    const [keyWord, setKeyWord] = useState('')
 
     const handleClose = () => {
         setIsShowModalAddNew(false)
@@ -48,6 +55,7 @@ const TableUsers = (props) => {
         cloneListUsers[index].first_name = user.first_name;
         setListUsers(cloneListUsers)
         console.log(listUsers);
+        console.log(cloneListUsers);
     }
 
     const handleDeleteUserFromModal = (user) => {
@@ -56,6 +64,16 @@ const TableUsers = (props) => {
         cloneListUsers = cloneListUsers.filter(item => item.id !== user.id)
         setListUsers(cloneListUsers)
     }
+
+    const handleSort = (sortBy, sortField) => {
+        setSortBy(sortBy)
+        setSortField(sortField)
+
+        let cloneListUsers = _.cloneDeep(listUsers);
+        cloneListUsers = _.orderBy(cloneListUsers, [sortField] , [sortBy])
+        setListUsers(cloneListUsers)
+    }
+
 
     useEffect(() => {
         getUsers(1)
@@ -77,6 +95,17 @@ const TableUsers = (props) => {
         // do không biết kiểu dữ liệu của selected nên để dấu + trước để convert từ string sang number
     }
 
+    const handleSearch = (event) => {
+        let term = event.target.value;
+        if (term) {
+            let cloneListUsers = _.cloneDeep(listUsers);
+            cloneListUsers = cloneListUsers.filter(item => item.email.includes(term));
+            setListUsers(cloneListUsers)
+        } else {
+            getUsers(1)
+        }
+    }
+
     return (
         <>
             <div className='my-3 add-new'>
@@ -88,12 +117,58 @@ const TableUsers = (props) => {
                     Add new user
                 </button>
             </div>
+
+            <div className='col-4 my-3'>
+                <input 
+                    className='form-control'
+                    placeholder='Search user by email...'
+                    // value={keyWord}
+                    onChange={(event) => handleSearch(event)}
+                />
+            </div>
+
+
             <Table striped bordered hover variant="dark">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>
+                            <div className='sort-header'>
+                                <span>ID</span>
+                                <span>
+                                    <button
+                                        onClick={() => handleSort('desc', 'id')}
+                                    >
+                                        Down
+                                    </button>
+                                    
+                                    <button
+                                        onClick={() => handleSort('asc', 'id')}
+                                    >
+                                        Up
+                                    </button>
+                                </span>
+                                    
+                            </div>
+                        </th>
                         <th>Email</th>
-                        <th>First Name</th>
+                        <th>
+                            <div className='sort-header'>
+                                <span>First Name</span>
+                                <span>
+                                    <button
+                                        onClick={() => handleSort('desc', 'first_name')}
+                                    >
+                                        Down
+                                    </button>
+                                    
+                                    <button
+                                        onClick={() => handleSort('asc', 'first_name')}
+                                    >
+                                        Up
+                                    </button>
+                                </span>
+                            </div>
+                        </th>
                         <th>Last Name</th>
                         <th>Actions</th>
                     </tr>

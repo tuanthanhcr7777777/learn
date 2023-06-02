@@ -7,7 +7,7 @@ const ModalAddNew = (props) => {
     const { show, handleClose, handleUpdateTable } = props;  
     const [name, setName] = useState('')
     const [job, setJob] = useState('')
-    // const [email, setEmail] = useState('')
+    const [email, setEmail] = useState('')
 
     const handleSaveUser = async () => {
         let res = await postCreateUser(name, job)
@@ -16,8 +16,8 @@ const ModalAddNew = (props) => {
             handleClose()
             setName('')
             setJob('')
-            // setEmail('')
-            handleUpdateTable({ first_name : name, id:res.id, last_name: job })
+            setEmail('')
+            handleUpdateTable({ first_name : name, id:res.id, last_name: job , email: email })
         } else {
             // handleClose()
         }
@@ -52,7 +52,7 @@ const ModalAddNew = (props) => {
                                 onChange={(event) => setJob(event.target.value)}
                             />
                         </div>
-                        {/* <div class="mb-3">
+                        <div className="mb-3">
                             <label className="form-label">Email</label>
                             <input 
                                 type="text" 
@@ -60,7 +60,7 @@ const ModalAddNew = (props) => {
                                 value={email}
                                 onChange={(event) => setEmail(event.target.value)}
                             />
-                        </div> */}
+                        </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
